@@ -1,11 +1,10 @@
 import os
 import shutil
-import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 def delete_path(root_dir, relative_path):
-    full_path = os.path.join(root_dir, relative_path)
+    full_path = os.path.join(root_dir, relative_path).replace("\\", "/")
 
     if os.path.exists(full_path):
         try:
@@ -38,11 +37,8 @@ def delete_files_and_folders(root_dir, list_file, max_workers=10):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Удаление файлов и папок из списка.")
-    parser.add_argument("root_directory", type=str, help="Корневая папка для поиска.")
-    parser.add_argument("list_file_path", type=str, help="Путь к файлу folders.txt.")
-    parser.add_argument("--max_workers", type=int, default=10, help="Максимальное количество потоков.")
+    root_directory = input("Корневая папка для поиска: ")
+    list_file_path = input("Путь к файлу с папками и файлами для удаления: ")
+    max_threads = int(input("Количество потоков: "))
 
-    args = parser.parse_args()
-
-    delete_files_and_folders(args.root_directory, args.list_file_path, args.max_workers)
+    delete_files_and_folders(root_directory, list_file_path, max_threads)
